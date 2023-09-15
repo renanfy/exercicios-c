@@ -1,13 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
+#include <ctype.h>
 
-void copiaConteudo(FILE *, FILE *);
-typedef struct
+void substituirVogais(FILE *entrada, FILE *saida)
 {
-    char x;
-} dados;
+    char caractere;
+
+    while ((caractere = fgetc(entrada)) != EOF)
+    {
+        if (strchr("aeiouAEIOU", caractere) != NULL)
+        {
+            fputc('*', saida);
+        }
+        else
+        {
+            fputc(caractere, saida);
+        }
+    }
+}
 
 int main()
 {
@@ -15,7 +26,7 @@ int main()
     char arquivo[50], copia[50];
 
     printf("Informe o nome do arquivo:");
-    scanf("%s", &arquivo);
+    scanf("%s", arquivo);
 
     f = fopen(arquivo, "r");
     if (f == NULL)
@@ -26,7 +37,7 @@ int main()
     }
 
     printf("Digite o nome do arquivo copia: (com extensao .txt):");
-    scanf("%s", &copia);
+    scanf("%s", copia);
 
     if (strstr(copia, ".txt") == NULL)
     {
@@ -41,20 +52,9 @@ int main()
         exit(1);
     }
 
-    copiaConteudo(g, f);
+    substituirVogais(f, g);
     fclose(f);
     fclose(g);
 
     return 0;
-}
-
-void copiaConteudo(FILE *g, FILE *f)
-{
-    dados aux;
-    fread(&aux, sizeof(aux), 1, f);
-    while (!feof(f))
-    {
-        fwrite(&aux, sizeof(aux), 1, g);
-        fread(&aux, sizeof(aux), 1, f);
-    }
 }
