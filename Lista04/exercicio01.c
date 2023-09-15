@@ -18,6 +18,13 @@ int main()
     printf("Insira um numero:");
     scanf("%d", &num_sorteio);
 
+    if (num_sorteio > 500)
+    {
+        printf("Infelizmente o limite de entrada e 500. Tente novamente com outro valor!\n");
+        system("pause");
+        exit(1);
+    }
+
     srand(time(NULL));
     fprintf(f, "%d\n", num_sorteio);
 
